@@ -1,0 +1,290 @@
+#Env Variables:
+
+$rg = '179-8347a2db-creatingazstdloadbalancerps-dqs'
+
+$location = 'southcentralus'
+
+$publicIp = New-AzPublicIpAddress -ResourceGroupName $rg -Name 'myPublicIp' -Location $location -AllocationMethod static -Sku Standard
+
+$feip = New-AzLoadBalancerFrontendIpConfig -Name 'myFrontendPool' -PublicIpAddress $publicip
+
+$bepool = New-AzLoadBalancerBackendAddressPoolConfig -Name 'myBackendPool'
+
+$probe = New-AzLoadBalancerProbeConfig -Name 'myHealthProbe' -Protocol Http -Port 80 -RequestPath / -IntervalInSeconds 360 -ProbeCount 5
+
+$rule = New-AzLoadBalancerRuleConfig -Name 'myLoadBalancerRuleWeb' -Protocol Tcp -Probe $probe -FrontendPort 80 -BackendPort 80 -FrontendIpConfi$rule = New-AzLoadBalancerRuleConfig -Name 'myLoadBalancerRuleWeb' -Protocol Tcp -Probe $probe -FrontendPort 80 -BackendPort 80 -FrontendIpConfi$rule = New-AzLoadBalancerRuleConfig -Name 'myLoadBalancerRuleWeb' -Protocol Tcp -Probe $probe -FrontendPort 80 -BackendPort 80 -FrontendIpConfiguration $feip -BackendAddressPool $bepool  
+
+$natrule1 = New-AzLoadBalancerInboundNatRuleConfig -Name 'myLoadBalancerRDP1' -FrontendIpConfiguration $feip -Protocol tcp -FrontendPort 4221 -BackendPort 3389
+
+$natrule2 = New-AzLoadBalancerInboundNatRuleConfig -Name 'myLoadBalancerRDP2' -FrontendIpConfiguration $feip -Protocol tcp -FrontendPort 4222 -BackendPort 3389
+
+$natrule3 = New-AzLoadBalancerInboundNatRuleConfig -Name 'myLoadBalancerRDP3' -FrontendIpConfiguration $feip -Protocol tcp -FrontendPort 4223 -BackendPort 3389
+
+New-AzLoadBalancer -ResourceGroupName $rg -Name 'danLoadBalancer' -Sku Standard -Location $location -FrontendIpConfiguration $feip -BackendAddressPool $bepool -Probe $probe -LoadBalancingRule $rule -InboundNatRule $natrule1,$natrule2,$natrule3
+
+
+#Output:
+
+Name                     : danLoadBalancer
+ResourceGroupName        : 179-8347a2db-creatingazstdloadbalancerps-dqs
+Location                 : southcentralus
+Id                       : /subscriptions/80ea84e8-afce-4851-928a-9e221
+                           9724c69/resourceGroups/179-8347a2db-creating
+                           azstdloadbalancerps-dqs/providers/Microsoft.
+                           Network/loadBalancers/danLoadBalancer
+Etag                     : W/"149a8ab7-90df-41fb-9726-e5e7e1a40ed4"
+ResourceGuid             : a156b813-7f1a-4e71-8d2d-ffa2da6a5aad
+ProvisioningState        : Succeeded
+Tags                     : 
+FrontendIpConfigurations : [
+                             {
+                               "Name": "myFrontendPool",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/frontendIPConfigurations/myFrontendPool
+                           ",
+                               "PrivateIpAllocationMethod": "Dynamic",
+                               "ProvisioningState": "Succeeded",
+                               "Zones": [],
+                               "InboundNatRules": [
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/inboundNatRules/myLoadBalancerRDP1"
+                                 },
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/inboundNatRules/myLoadBalancerRDP2"
+                                 },
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/inboundNatRules/myLoadBalancerRDP3"
+                                 }
+                               ],
+                               "InboundNatPools": [],
+                               "OutboundRules": [],
+                               "LoadBalancingRules": [
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/loadBalancingRules/myLoadBalancerRu
+                           leWeb"
+                                 }
+                               ],
+                               "PublicIpAddress": {
+                                 "DdosSettings": {},
+                                 "IpTags": [],
+                                 "Zones": [],
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/publicIPAddresses/myPub
+                           licIp"
+                               }
+                             }
+                           ]
+BackendAddressPools      : [
+                             {
+                               "Name": "myBackendPool",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/backendAddressPools/myBackendPool",
+                               "ProvisioningState": "Succeeded",
+                               "BackendIpConfigurations": [],
+                               "LoadBalancerBackendAddresses": [],
+                               "LoadBalancingRules": [
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/loadBalancingRules/myLoadBalancerRu
+                           leWeb"
+                                 }
+                               ],
+                               "TunnelInterfaces": []
+                             }
+                           ]
+LoadBalancingRules       : [
+                             {
+                               "Name": "myLoadBalancerRuleWeb",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/loadBalancingRules/myLoadBalancerRuleWe
+                           b",
+                               "Protocol": "Tcp",
+                               "LoadDistribution": "Default",
+                               "FrontendPort": 80,
+                               "BackendPort": 80,
+                               "IdleTimeoutInMinutes": 4,
+                               "EnableFloatingIP": false,
+                               "EnableTcpReset": false,
+                               "DisableOutboundSNAT": false,
+                               "ProvisioningState": "Succeeded",
+                               "FrontendIPConfiguration": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/frontendIPConfigurations/myFrontendPo
+                           ol"
+                               },
+                               "BackendAddressPool": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/backendAddressPools/myBackendPool"
+                               },
+                               "BackendAddressPools": [
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/backendAddressPools/myBackendPool"
+                                 }
+                               ],
+                               "Probe": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/probes/myHealthProbe"
+                               }
+                             }
+                           ]
+Probes                   : [
+                             {
+                               "Name": "myHealthProbe",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/probes/myHealthProbe",
+                               "Protocol": "Http",
+                               "Port": 80,
+                               "IntervalInSeconds": 360,
+                               "NumberOfProbes": 5,
+                               "ProbeThreshold": 1,
+                               "RequestPath": "/",
+                               "ProvisioningState": "Succeeded",
+                               "LoadBalancingRules": [
+                                 {
+                                   "Id": "/subscriptions/80ea84e8-afce-
+                           4851-928a-9e2219724c69/resourceGroups/179-83
+                           47a2db-creatingazstdloadbalancerps-dqs/provi
+                           ders/Microsoft.Network/loadBalancers/danLoad
+                           Balancer/loadBalancingRules/myLoadBalancerRu
+                           leWeb"
+                                 }
+                               ]
+                             }
+                           ]
+InboundNatRules          : [
+                             {
+                               "Name": "myLoadBalancerRDP1",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/inboundNatRules/myLoadBalancerRDP1",
+                               "Protocol": "Tcp",
+                               "FrontendPort": 4221,
+                               "BackendPort": 3389,
+                               "IdleTimeoutInMinutes": 4,
+                               "EnableFloatingIP": false,
+                               "EnableTcpReset": false,
+                               "ProvisioningState": "Succeeded",
+                               "FrontendIPConfiguration": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/frontendIPConfigurations/myFrontendPo
+                           ol"
+                               }
+                             },
+                             {
+                               "Name": "myLoadBalancerRDP2",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/inboundNatRules/myLoadBalancerRDP2",
+                               "Protocol": "Tcp",
+                               "FrontendPort": 4222,
+                               "BackendPort": 3389,
+                               "IdleTimeoutInMinutes": 4,
+                               "EnableFloatingIP": false,
+                               "EnableTcpReset": false,
+                               "ProvisioningState": "Succeeded",
+                               "FrontendIPConfiguration": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/frontendIPConfigurations/myFrontendPo
+                           ol"
+                               }
+                             },
+                             {
+                               "Name": "myLoadBalancerRDP3",
+                               "Etag": "W/\"149a8ab7-90df-41fb-9726-e5e
+                           7e1a40ed4\"",
+                               "Id": "/subscriptions/80ea84e8-afce-4851
+                           -928a-9e2219724c69/resourceGroups/179-8347a2
+                           db-creatingazstdloadbalancerps-dqs/providers
+                           /Microsoft.Network/loadBalancers/danLoadBala
+                           ncer/inboundNatRules/myLoadBalancerRDP3",
+                               "Protocol": "Tcp",
+                               "FrontendPort": 4223,
+                               "BackendPort": 3389,
+                               "IdleTimeoutInMinutes": 4,
+                               "EnableFloatingIP": false,
+                               "EnableTcpReset": false,
+                               "ProvisioningState": "Succeeded",
+                               "FrontendIPConfiguration": {
+                                 "Id": "/subscriptions/80ea84e8-afce-48
+                           51-928a-9e2219724c69/resourceGroups/179-8347
+                           a2db-creatingazstdloadbalancerps-dqs/provide
+                           rs/Microsoft.Network/loadBalancers/danLoadBa
+                           lancer/frontendIPConfigurations/myFrontendPo
+                           ol"
+                               }
+                             }
+                           ]
+InboundNatPools          : []
+Sku                      : {
+                             "Name": "Standard",
+                             "Tier": "Regional"
+                           }
+ExtendedLocation         : null
