@@ -1,0 +1,55 @@
+#Full command using pre-existing variables from SQL Server creation:
+
+New-AzSqlDatabase -DatabaseName 'danDatabase01' -ResourceGroupName $rg -ServerName $server
+
+#Output:
+
+ResourceGroupName                : 178-8cbc31b2-createazuresqldbps-gse
+ServerName                       : dansqlserver01
+DatabaseName                     : danDatabase01
+Location                         : southcentralus
+DatabaseId                       : 0e24c1c0-de05-4084-b45f-b42da3d71e91
+Edition                          : GeneralPurpose
+CollationName                    : SQL_Latin1_General_CP1_CI_AS
+CatalogCollation                 : 
+MaxSizeBytes                     : 34359738368
+Status                           : Online
+CreationDate                     : 4/2/2023 3:55:03 PM
+CurrentServiceObjectiveId        : 00000000-0000-0000-0000-000000000000
+CurrentServiceObjectiveName      : GP_Gen5_2
+RequestedServiceObjectiveName    : GP_Gen5_2
+RequestedServiceObjectiveId      : 
+ElasticPoolName                  : 
+EarliestRestoreDate              : 
+Tags                             : 
+ResourceId                       : /subscriptions/80ea84e8-afce-4851-92
+                                   8a-9e2219724c69/resourceGroups/178-8
+                                   cbc31b2-createazuresqldbps-gse/provi
+                                   ders/Microsoft.Sql/servers/dansqlser
+                                   ver01/databases/danDatabase01
+CreateMode                       : 
+ReadScale                        : Disabled
+ZoneRedundant                    : False
+Capacity                         : 2
+Family                           : Gen5
+SkuName                          : GP_Gen5
+LicenseType                      : LicenseIncluded
+AutoPauseDelayInMinutes          : 
+MinimumCapacity                  : 
+ReadReplicaCount                 : 
+HighAvailabilityReplicaCount     : 
+CurrentBackupStorageRedundancy   : Geo
+RequestedBackupStorageRedundancy : Geo
+SecondaryType                    : 
+MaintenanceConfigurationId       : /subscriptions/80ea84e8-afce-4851-92
+                                   8a-9e2219724c69/providers/Microsoft.
+                                   Maintenance/publicMaintenanceConfigu
+                                   rations/SQL_Default
+EnableLedger                     : False
+PreferredEnclaveType             : 
+PausedDate                       : 
+ResumedDate                      : 
+Identity                         : 
+EncryptionProtector              : 
+Keys                             : 
+FederatedClientId                : 

@@ -1,0 +1,32 @@
+#Env Variables:
+ 
+$rg = '178-8cbc31b2-createazuresqldbps-gse'
+$location = 'southcentralus'
+$server = 'dansqlserver01'
+
+#Full Command:
+
+New-AzSqlServer -ResourceGroupName $rg -Location $location -ServerName $server -ServerVersion '12.0' -SqlAdministratorCredential (Get-Credential)
+
+#Output
+
+ResourceGroupName             : 178-8cbc31b2-createazuresqldbps-gse
+ServerName                    : dansqlserver01
+Location                      : southcentralus
+SqlAdministratorLogin         : azureuser
+SqlAdministratorPassword      : 
+ServerVersion                 : 12.0
+Tags                          : 
+Identity                      : 
+FullyQualifiedDomainName      : dansqlserver01.database.windows.net
+ResourceId                    : /subscriptions/80ea84e8-afce-4851-928a-
+                                9e2219724c69/resourceGroups/178-8cbc31b
+                                2-createazuresqldbps-gse/providers/Micr
+                                osoft.Sql/servers/dansqlserver01
+MinimalTlsVersion             : 
+PublicNetworkAccess           : Enabled
+RestrictOutboundNetworkAccess : Disabled
+Administrators                : 
+PrimaryUserAssignedIdentityId : 
+KeyId                         : 
+FederatedClientId             : 
