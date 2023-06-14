@@ -1,0 +1,32 @@
+$rg = "432-7a0a0562-snapshot-an-azure-vm-disk-using-power"
+
+$diskName = "winVM_OsDisk_1_952f3e7a674e40edb2e21318f0c1
+
+$sasExpiryDuration = "3600"
+
+$storageAccountName = "stor5jc7whqmyxuee"
+
+$storageAccountKey = "Ij+KoTpLhMtGshcSnX+e+ZNo+njxcwjQ9QLgL0Lxm
+
+$storageContainerName = "container1"
+
+$destinationVHDFileName = "disk1.vhd"
+
+$useAzCopy = 1
+
+$vmName = "winVM"
+
+Stop-AzVM -ResourceGroupName $rg -Name $vmName
+
+$sas = Grant-AzDiskAccess -ResourceGroupName $rg -DiskName $diskName -DurationInSecond $sasExpiryDuration -Access Read
+
+$destinationContext = New-AzStorageContext -StorageAccountName $storageAccountName -StorageAccountKey $storageAccountKey
+
+if($useAzCopy -eq 1)                                    >> {                                                                    >>     $containerSASURI = New-AzStorageContainerSASToken -Context $destinationContext -ExpiryTime(get-date).AddSeconds($sasExpiryDuration) -FullUri -Name $storageContainerName -Permission rw
+>>     azcopy copy $sas.AccessSAS $containerSASURI
+>> 
+>> }else{
+>> 
+>>     Start-AzStorageBlobCopy -AbsoluteUri $sas.AccessSAS -DestContainer $storageContainerName -DestContext $destinationContext -DestBlob $destinationVHDFileName
+>> }
+
